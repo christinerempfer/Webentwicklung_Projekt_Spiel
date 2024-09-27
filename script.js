@@ -1,6 +1,5 @@
 // #############################################################################
-//  WELCOME PAGE
-// #############################################################################
+// WELCOME PAGE 
 const playerNameInput = document.getElementById('playerName');
 const startGameButton = document.getElementById('startGame');
 const gameMenu = document.getElementById('gameMenu');
@@ -23,7 +22,6 @@ startGameButton.addEventListener('click', () => {
 
 // #############################################################################
 //  GAME MENU
-// ##########################################################################
 const quoteOptions = document.getElementById('quoteOptions');
 const wordOptions = document.getElementById('wordOptions');
 const playGameButton = document.getElementById('playGame');
@@ -31,6 +29,7 @@ const gamePage = document.getElementById('gamePage');
 const playerDisplay = document.getElementById('playerDisplay');
 const quoteButton = document.getElementById('quoteButton');
 const wordButton = document.getElementById('wordButton');
+
 
 // Event Listener für Zitat raten
 quoteButton.addEventListener('click', () => {
@@ -42,10 +41,10 @@ quoteButton.addEventListener('click', () => {
 
 // Event Listener für Wort raten
 wordButton.addEventListener('click', () => {
-    wordOptions.classList.remove('hidden'); 
-    quoteOptions.classList.add('hidden');   
-    gameTypeSelect.value = 'word';          
-    playGameButton.style.display = "block"; 
+    wordOptions.classList.remove('hidden');   // Zeige Wortoptionen
+    quoteOptions.classList.add('hidden');     // Verstecke Zitatoptionen
+    gameTypeSelect.value = 'word';            // Setze Spieltyp auf 'word'
+    playGameButton.style.display = "block"; // Spiel starten Button anzeigen
 });
 
 // Wortlänge Slider aktualisieren
@@ -58,8 +57,7 @@ wordLengthInput.addEventListener('input', () => {
 
 
 // #############################################################################
-//  SETUP GAME
-// #############################################################################
+// SET UP GAME WITH API CALLS
 
 // Funktion zum Abrufen eines zufälligen Zitats
 const wordDisplay = document.getElementById('wordDisplay');
@@ -81,6 +79,8 @@ function calculateAttemptsBasedOnLength() {
     }
 }
 
+
+
 // Am Ende des Spiels die Zeit berechnen
 function calculateTime() {
     endTime = Date.now();
@@ -96,6 +96,7 @@ function startTimer() {
         document.getElementById('timer').textContent = timer;
     }, 1000);
 }
+
 
 // Funktion zur Initialisierung des Spiels
 function setupGame() {
@@ -116,6 +117,7 @@ function setupGame() {
     // startTimer();
     resetLetterButtons(); // Buchstabenkontainer zurücksetzen
     wrongGuesses = 0; // Falsche Versuche zurücksetzen
+    resetRightImagePosition();
 }
     
 function shortenQuote(quote) {
@@ -151,22 +153,20 @@ async function fetchRandomWord(lang, length) {
         const data = await response.json();
         selectedText = data[0]; // Zufälliges Wort auswählen
         //calculateAttemptsBasedOnLength(); // Versuche basierend auf Wortlänge berechnen
-        attempts=6;
+        attempts=1;
         setupGame();
     } else {
         messageElement.textContent = "Fehler beim Abrufen des Wortes.";
     }
     
     attempts=6;
-    // selectedText = "Hase"; // Uncomment if you want to have a fixed word for testing the game
+    // selectedText = "Hase"; // das ist nützlich um das SPiel mit eine fixen Wort zu testen
     setupGame();
 }
 
 
 
-// #############################################################################
-//  SETUP GAME
-// #############################################################################
+
 
 // Spiel starten
 playGameButton.addEventListener('click', () => {
@@ -187,14 +187,16 @@ playGameButton.addEventListener('click', () => {
         const wordLength = wordLengthInput.value;
         fetchRandomWord(language, wordLength); // Hole ein Wort basierend auf Sprache und Länge
     }
-    console.log("geht theoretisch")
+    
 });
 
 // #############################################################################
-//  THE MAIN GAME LOGIC
-// #############################################################################
+//  THE LOGIC OF THE GAME
 const letterButtons = document.querySelectorAll('.letter-btn');
+const rightImage = document.getElementById('rightBottomImage');
+
 let wrongGuesses = 0;  // Zähler für falsche Buchstaben
+rightImage.style.right = "30px";
 
 // Event Listener für jeden Buchstaben-Button hinzufügen
 letterButtons.forEach(button => {
@@ -204,6 +206,7 @@ letterButtons.forEach(button => {
 
         // Button deaktivieren, nachdem er gewählt wurde
         button.disabled = true;
+        // button.classList.add('disabled'); 
     });
 });
 
@@ -248,13 +251,15 @@ function updateButtonStyle(letter, isCorrect) {
 
 const initialRightPosition = 20; // Startposition von rechts in Pixel
 function updateRightImagePosition(remainingAttempts) {
-    
-    const rightImage = document.getElementById('rightBottomImage');
     const screenWidth = window.innerWidth; // Bildschirmbreite
     const stepSize = screenWidth / attempts; // Schrittgröße berechnen
 
     // // Berechne die neue Position basierend auf den verbleibenden Versuchen
     let newRightPosition = initialRightPosition + (wrongGuesses *  stepSize);
+    // console.log(newRightPosition)
+    // console.log(screenWidth)
+    console.log(stepSize)
+    // console.log(remainingAttempts)
 
     // // Setze die neue Position
     // Beim handygrößen darf das männchen nicht ganz so weitlaufen
@@ -263,6 +268,12 @@ function updateRightImagePosition(remainingAttempts) {
     }
     rightImage.style.right = `${newRightPosition}px`;
 }
+
+function resetRightImagePosition() {
+    wrongGuesses = 0; // Zurücksetzen der Fehlversuche
+    rightImage.style.right = `${initialRightPosition}px`; // Setze die Position zurück
+}
+
 
 
 function handleLetterGuess(letter) {
@@ -281,16 +292,14 @@ function handleLetterGuess(letter) {
         attemptsElement.textContent = attempts-wrongGuesses;
         updateRightImagePosition(attempts-wrongGuesses);
         updateButtonStyle(letter, false)
-        // updateHangmanImage(); // Eine Funktion, um den Fortschritt im Spiel (z.B. das Galgenmännchen) zu zeigen
     }
 
     checkGameStatus(); // Prüfen, ob das Spiel gewonnen/verloren wurde
 }
 
 
-// #############################################################################
-// END OF THE GAME
-// #############################################################################
+// ############################################################################
+// spiele zu ende
 const congratulationsPage = document.getElementById('congratulationsPage');
 const lostPage = document.getElementById('lostPage');
 
@@ -300,7 +309,6 @@ function checkGameStatus() {
         messageElement.textContent = "Spiel verloren!"
         calculateTime();
         setTimeout(showLostPage, 500); // Zeige die Verliereseite an
-
         // Spiel beenden und entsprechende Nachricht anzeigen
     }
 
@@ -356,6 +364,7 @@ function showLostPage() {
 }
 
 
+
 function resetLetterButtons() {
     const letterButtons = document.querySelectorAll('.letter-btn'); // Alle Buchstabenschaltflächen auswählen
 
@@ -365,6 +374,7 @@ function resetLetterButtons() {
         button.classList.remove('disabled'); // Entferne die disabled-Klasse, falls vorhanden
     });
 }
+
 
 function handleButtonClick(action) {
     switch (action) {
@@ -390,16 +400,11 @@ function handleButtonClick(action) {
     }
 }
 
-
-// Event Listener für die Buttons auf der Gratulationsseite
+// Füge Event Listener für die Verlustseite hinzu
 document.getElementById('playAgainButtonWin').addEventListener('click', () => handleButtonClick('playAgain'));
 document.getElementById('quitButtonWin').addEventListener('click', () => handleButtonClick('quit'));
-document.getElementById('highScoresButtonWin').addEventListener('click', () => handleButtonClick('highScores'));
-
-// Füge Event Listener für die Verlustseite hinzu
 document.getElementById('playAgainButtonLose').addEventListener('click', () => handleButtonClick('playAgain'));
 document.getElementById('quitButtonLose').addEventListener('click', () => handleButtonClick('quit'));
-
 
 function calculateScore(timeTaken, attempts) {
     let score = 0; // Initialize the score variable

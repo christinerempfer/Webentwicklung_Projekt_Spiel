@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hungriger Hai Rate Spiel</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-
 <body class="bg-gray-100">
-    <!-- WELCOME PAGE .................................................................. -->
+
     <div id="welcomePage" class="welcome-container">
         <img src="shark-week.gif" class="top-left-image" alt="Shark">
         <img src="23966506_no_bg.png" class="bottom-right-image" alt="Beach Scene">
@@ -23,6 +23,7 @@
     </div>
 
     <!-- GAME MENU.................................................................. -->
+    
     <div id="gameMenu" class="hidden">
         <h2>Spielmenü</h2>
     
@@ -102,6 +103,7 @@
                 <option value="morning">Morgen</option>
                 <option value="movies">Filme</option>
                 <option value="success">Erfolg</option>
+                <!-- Weitere Kategorien hinzufügen -->
             </select>
         </div>
     
@@ -124,9 +126,11 @@
     
         <button id="playGame">Spiel starten</button>
     </div>
+    <!--..GAME PAGE................................................................  -->
 
-    <!--... MAIN PAGE GAME .............................................................-->
     <div id="gamePage" class="hidden">
+        <!-- <h2>Hallo <span id="playerDisplay"></span>, lass uns spielen!</h2> -->
+        <!-- <p id="gameInstruction">Errate das Wort oder das Zitat:</p> -->
         <div class="left-bottom-image">
             <img src="shark-week.gif" alt="Linkes Bild">
         </div>
@@ -137,12 +141,19 @@
         <!-- Box für Spielanleitung -->
         <div id="instructionBox" class="instruction-box">
             <p>Hallo <span id="playerDisplay"></span>, Errate das Wort, bevor der Schwimmer auf den Hai trifft.</p>
-            <p><span id="message" class="mt-4 text-red-600"></span> Verbleibende Versuche: <span id="attempts">6</span> </p>      
+            <!-- <p id="gameInstruction">Errate das Wort oder das Zitat:</p> -->
+            <!-- <p>Verbleibende Versuche: <span id="attempts">6</span>; Zeit: <span id="timer">0</span> Sekunden</p> -->
+            <p><span id="message" class="mt-4 text-red-600"></span> Verbleibende Versuche: <span id="attempts">6</span> </p>
+            
         </div>
         
+
         <!-- Anzeige des Wortes oder Zitats -->
         <div id="wordDisplay"></div>
     
+
+
+
         <div id="letterContainer" class="letter-container">
             <!-- Buchstaben des Alphabets -->
             <button class="letter-btn">A</button>
@@ -178,12 +189,16 @@
             <button class="letter-btn">Ü</button>
             <button class="letter-btn">ß</button>
         </div>
-      
+    
+        
         <button id="newGameButton" class="hidden">Neues Spiel</button>
         <p id="wrongGuesses"></p>
+        
+
+
     </div>
 
-    <!--... WIN PAGE .............................................................-->
+    <!--..CONGRATULATION PAGE................................................................  -->
     <div id="congratulationsPage" class="hidden">
         <h2>Herzlichen Glückwunsch!</h2>
         <p>Du hast das Spiel gewonnen!</p>
@@ -197,7 +212,7 @@
         </div>
     </div>
 
-    <!--... LOST PAGE .............................................................-->
+    <!--..LOST PAGE................................................................  -->
     <div id="lostPage" class="hidden lost-container">
         <h2>Schade!</h2>
         <p>Du hast das Spiel verloren!</p>
@@ -211,7 +226,12 @@
         </div>
     </div>
     
-    <!-- Add Java Script -->
+
+
+    
+
+
+
     <script src="script.js"></script>
 </body>
 </html>
