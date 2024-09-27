@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hungriger Hai Rate Spiel</title>
+</head>
+
+<body class="bg-gray-100">
+    <!-- WELCOME PAGE .................................................................. -->
+    <div id="welcomePage" class="welcome-container">
+        <img src="shark-week.gif" class="top-left-image" alt="Shark">
+        <img src="23966506_no_bg.png" class="bottom-right-image" alt="Beach Scene">
+        
+        <h1 class="title">Hungriger Hai Worträtsel</h1>
+        
+        <div class="input-container">
+            <label for="playerName" id="player-name-label" class="player-name-label">Spielername:</label>
+            <input type="text" id="playerName" placeholder="Name eingeben" class="player-input">
+            <button id="startGame" disabled>Spiel starten</button>
+        </div>
+    </div>
+
+    <!-- GAME MENU.................................................................. -->
+    <div id="gameMenu" class="hidden">
+        <h2>Spielmenü</h2>
+    
+        <div class="mode-selection">
+            <button id="quoteButton" class="mode-btn">Zitat raten</button>
+            <button id="wordButton" class="mode-btn">Wort raten</button>
+        </div>
+    
+        <!-- Zitat Optionen -->
+        <div id="quoteOptions" class="hidden">
+            <label for="category">Kategorie wählen:</label>
+            <select id="category">
+                <option value="age">Alter</option>
+                <option value="alone">Allein</option>
+                <option value="amazing">Erstaunlich</option>
+                <option value="anger">Wut</option>
+                <option value="architecture">Architektur</option>
+                <option value="art">Kunst</option>
+                <option value="attitude">Einstellung</option>
+                <option value="beauty">Schönheit</option>
+                <option value="best">Beste</option>
+                <option value="birthday">Geburtstag</option>
+                <option value="business">Geschäft</option>
+                <option value="car">Auto</option>
+                <option value="change">Änderung</option>
+                <option value="communication">Kommunikation</option>
+                <option value="computers">Computer</option>
+                <option value="cool">Cool</option>
+                <option value="courage">Mut</option>
+                <option value="dad">Vater</option>
+                <option value="dating">Dating</option>
+                <option value="death">Tod</option>
+                <option value="design">Design</option>
+                <option value="dreams">Träume</option>
+                <option value="education">Bildung</option>
+                <option value="environmental">Umwelt</option>
+                <option value="equality">Gleichheit</option>
+                <option value="experience">Erfahrung</option>
+                <option value="failure">Scheitern</option>
+                <option value="faith">Glaube</option>
+                <option value="family">Familie</option>
+                <option value="famous">Berühmt</option>
+                <option value="fear">Angst</option>
+                <option value="fitness">Fitness</option>
+                <option value="food">Essen</option>
+                <option value="forgiveness">Vergebung</option>
+                <option value="freedom">Freiheit</option>
+                <option value="friendship">Freundschaft</option>
+                <option value="funny">Lustig</option>
+                <option value="future">Zukunft</option>
+                <option value="god">Gott</option>
+                <option value="good">Gut</option>
+                <option value="government">Regierung</option>
+                <option value="graduation">Abschluss</option>
+                <option value="great">Großartig</option>
+                <option value="happiness">Glück</option>
+                <option value="health">Gesundheit</option>
+                <option value="history">Geschichte</option>
+                <option value="home">Zuhause</option>
+                <option value="hope">Hoffnung</option>
+                <option value="humor">Humor</option>
+                <option value="imagination">Vorstellungskraft</option>
+                <option value="inspirational">Inspirierend</option>
+                <option value="intelligence">Intelligenz</option>
+                <option value="jealousy">Eifersucht</option>
+                <option value="knowledge">Wissen</option>
+                <option value="leadership">Führung</option>
+                <option value="learning">Lernen</option>
+                <option value="legal">Rechtlich</option>
+                <option value="life">Leben</option>
+                <option value="love">Liebe</option>
+                <option value="marriage">Ehe</option>
+                <option value="medical">Medizinisch</option>
+                <option value="men">Männer</option>
+                <option value="mom">Mutter</option>
+                <option value="money">Geld</option>
+                <option value="morning">Morgen</option>
+                <option value="movies">Filme</option>
+                <option value="success">Erfolg</option>
+            </select>
+        </div>
+    
+        <!-- Wort Optionen -->
+        <div id="wordOptions" class="hidden">
+            <label for="language">Sprache wählen:</label>
+            <select id="language">
+                <option value="de">Deutsch</option>
+                <option value="en">Englisch</option>
+                <option value="it">Italienisch</option>
+                <option value="fr">Französisch</option>
+            </select>
+    
+            <label for="wordLength">Wortlänge:</label>
+            <input type="range" id="wordLength" min="3" max="10" value="5">
+            <span id="wordLengthDisplay">5</span>
+        </div>
+        <input type="hidden" id="gameTypeSelect" value="">
+        
+    
+        <button id="playGame">Spiel starten</button>
+    </div>
+
+    <!--... MAIN PAGE GAME .............................................................-->
+    <div id="gamePage" class="hidden">
+        <div class="left-bottom-image">
+            <img src="shark-week.gif" alt="Linkes Bild">
+        </div>
+        <div class="right-bottom-image" id="rightBottomImage">
+            <img src="23966506_no_bg.png" alt="Rechtes Bild">
+        </div>
+    
+        <!-- Box für Spielanleitung -->
+        <div id="instructionBox" class="instruction-box">
+            <p>Hallo <span id="playerDisplay"></span>, Errate das Wort, bevor der Schwimmer auf den Hai trifft.</p>
+            <p><span id="message" class="mt-4 text-red-600"></span> Verbleibende Versuche: <span id="attempts">6</span> </p>      
+        </div>
+        
+        <!-- Anzeige des Wortes oder Zitats -->
+        <div id="wordDisplay"></div>
+    
+        <div id="letterContainer" class="letter-container">
+            <!-- Buchstaben des Alphabets -->
+            <button class="letter-btn">A</button>
+            <button class="letter-btn">B</button>
+            <button class="letter-btn">C</button>
+            <button class="letter-btn">D</button>
+            <button class="letter-btn">E</button>
+            <button class="letter-btn">F</button>
+            <button class="letter-btn">G</button>
+            <button class="letter-btn">H</button>
+            <button class="letter-btn">I</button>
+            <button class="letter-btn">J</button>
+            <button class="letter-btn">K</button>
+            <button class="letter-btn">L</button>
+            <button class="letter-btn">M</button>
+            <button class="letter-btn">N</button>
+            <button class="letter-btn">O</button>
+            <button class="letter-btn">P</button>
+            <button class="letter-btn">Q</button>
+            <button class="letter-btn">R</button>
+            <button class="letter-btn">S</button>
+            <button class="letter-btn">T</button>
+            <button class="letter-btn">U</button>
+            <button class="letter-btn">V</button>
+            <button class="letter-btn">W</button>
+            <button class="letter-btn">X</button>
+            <button class="letter-btn">Y</button>
+            <button class="letter-btn">Z</button>
+            
+            <!-- Umlaute und ß -->
+            <button class="letter-btn">Ä</button>
+            <button class="letter-btn">Ö</button>
+            <button class="letter-btn">Ü</button>
+            <button class="letter-btn">ß</button>
+        </div>
+      
+        <button id="newGameButton" class="hidden">Neues Spiel</button>
+        <p id="wrongGuesses"></p>
+    </div>
+
+    <!--... WIN PAGE .............................................................-->
+    <div id="congratulationsPage" class="hidden">
+        <h2>Herzlichen Glückwunsch!</h2>
+        <p>Du hast das Spiel gewonnen!</p>
+        <div>
+            <div id="wordBox" class="word-box"></div> <!-- Box für das gesuchte Wort -->
+            <p>Gebrauchte Versuche: <span id="attemptsCountWin"></span></p>
+            <p>Benötigte Zeit: <span id="timeTakenWin"></span></p>
+            <p><span id="scoreDisplay"></span></p>
+            <button id="playAgainButtonWin">Nochmal spielen</button>
+            <button id="quitButtonWin">Beenden</button>
+        </div>
+    </div>
+
+    <!--... LOST PAGE .............................................................-->
+    <div id="lostPage" class="hidden lost-container">
+        <h2>Schade!</h2>
+        <p>Du hast das Spiel verloren!</p>
+        <div id="wordBoxLost" class="word-box"></div> <!-- Box für das gesuchte Wort -->
+        <p>Gebrauchte Versuche: <span id="attemptsCountLose"></span></p>
+        <p>Benötigte Zeit: <span id="timeTakenLose"></span></p>
+        <p>Score: 0</p>
+        <div class="button-container">
+            <button id="playAgainButtonLose">Nochmal spielen</button>
+            <button id="quitButtonLose">Beenden</button>
+        </div>
+    </div>
+    
+    <!-- Add Java Script -->
+    <script src="script.js"></script>
+</body>
+</html>
